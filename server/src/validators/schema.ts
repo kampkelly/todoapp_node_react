@@ -1,17 +1,29 @@
 import * as yup from 'yup';
 import { StatusEnum } from '../database/entities/enums';
 
-export const createTodoSchema = yup
-  .object({
+const createObject = (type: string) => {
+  return {
     data: yup.object({
       type: yup
         .string()
-        .oneOf(['todo'])
+        .oneOf([type])
         .required(),
       attributes: yup.object({
         title: yup.string().required(),
       }),
     }),
+  };
+};
+
+export const createTodoSchema = yup
+  .object({
+    ...createObject('todo'),
+  })
+  .noUnknown();
+
+export const createSubtaskSchema = yup
+  .object({
+    ...createObject('subtask'),
   })
   .noUnknown();
 

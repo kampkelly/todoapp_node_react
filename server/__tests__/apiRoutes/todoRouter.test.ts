@@ -4,6 +4,7 @@
 
 import supertest from 'supertest';
 import { assert } from 'chai';
+import faker from 'faker';
 import { createConnection } from 'typeorm';
 
 require('dotenv').config();
@@ -111,6 +112,57 @@ describe('Todo Router', () => {
         .send(data)
         .set('Content-Type', contentType);
       assert.equal(res.status, 200);
+    });
+  });
+
+  describe('Create a subtask', () => {
+    let data: any;
+
+    before(function beforeHook() {
+      data = {
+        data: {
+          type: 'subtask',
+          attributes: {
+            title: 'First subtask',
+          },
+        },
+      };
+    });
+
+    it('should not create with incorrect data', async () => {
+      const res = await server
+        .post(`/todos/${todoID1}/subtasks`)
+        .send({
+          data: {
+            type: 'todo',
+            attributes: {
+              status: 'First Todo',
+            },
+          },
+        })
+        .set('Content-Type', contentType);
+      assert.equal(res.status, 400);
+      assert.equal(
+        res.body.errors[0].title,
+        'data.type must be one of the following values: subtask'
+      );
+    });
+
+    it('should not create a subtask with invalid todoID', async () => {
+      const res = await server
+        .post(`/todos/${faker.datatype.uuid()}/subtasks`)
+        .send(data)
+        .set('Content-Type', contentType);
+      assert.equal(res.status, 404);
+      assert.equal(res.body.errors[0].title, 'Todo with id does not exist');
+    });
+
+    it('should create a subtask', async () => {
+      const res = await server
+        .post(`/todos/${todoID1}/subtasks`)
+        .send(data)
+        .set('Content-Type', contentType);
+      assert.equal(res.status, 201);
     });
   });
 });
