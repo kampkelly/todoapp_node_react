@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "outDir": "./build",
+    "baseUrl": "./src",
+    "rootDir": "./",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "lib": [
+      "es2019",
+      "es2020.bigint",
+      "es2020.string",
+      "es2020.symbol.wellknown"
+    ],
+    "target": "es2019"
+  }
+}

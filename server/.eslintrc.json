@@ -1,0 +1,37 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "mocha": true
+  },
+  "extends": [
+    "airbnb-typescript-prettier",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "sourceType": "module",
+    "tsconfigRootDir": "./server"
+
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "max-lines-per-function": ["error", {"max": 80, "skipBlankLines": true, "skipComments": true}],
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ]
+  }
+}
