@@ -24,4 +24,9 @@ export default class SubtaskDAO {
       },
     });
   };
+
+  public static updateSubtask = async (subtaskID: string, subtask: Partial<Subtask>) => {
+    await getRepository(Subtask).update(subtaskID, subtask);
+    return SubtaskDAO.getSubtaskByID(subtask.todo?.id!, subtaskID);
+  };
 }

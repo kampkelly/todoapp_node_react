@@ -7,4 +7,8 @@ export default class TodoController {
   public static createSubtask = async (req: Request, res: Response) => {
     return controllerTemplate(subtaskService.createSubtask(req.params, req.body), req, res);
   };
+
+  public static updateSubtask = async (req: Request, res: Response) => {
+    return controllerTemplate(subtaskService.updateSubtask(req.params, req.body), req, res);
+  };
 }

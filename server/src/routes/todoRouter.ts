@@ -9,5 +9,6 @@ router.post('/', todoController.createTodo);
 router.patch('/:todoID', todoController.updateTodo);
 
 router.post('/:todoID/subtasks', subtaskController.createSubtask);
+router.patch('/:todoID/subtasks/:subtaskID', subtaskController.updateSubtask);
 
 export default router;

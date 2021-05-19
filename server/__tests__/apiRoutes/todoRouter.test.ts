@@ -10,6 +10,7 @@ import { createConnection } from 'typeorm';
 require('dotenv').config();
 
 import app from '../../src/server';
+import todoDao from '../../src/database/dao/todoDao';
 import { StatusEnum } from '../../src/database/entities/enums';
 
 const ormConfig = require('../../ormconfig');
@@ -17,7 +18,8 @@ const ormConfig = require('../../ormconfig');
 const server = supertest.agent(app);
 
 const contentType = 'application/vnd.api+json';
-let todoID1 = '';
+let todoID1: string;
+let subtaskID1: string;
 
 describe('Todo Router', () => {
   before(async function beforeHook() {
@@ -163,6 +165,71 @@ describe('Todo Router', () => {
         .send(data)
         .set('Content-Type', contentType);
       assert.equal(res.status, 201);
+      subtaskID1 = res.body.data.id;
+    });
+  });
+
+  describe('Update a subtask', () => {
+    let data: any;
+
+    before(function beforeHook() {
+      data = {
+        data: {
+          type: 'subtask',
+          id: subtaskID1,
+          attributes: {
+            status: StatusEnum.COMPLETED,
+          },
+        },
+      };
+    });
+
+    it('should not update with incorrect data', async () => {
+      const res = await server
+        .patch(`/todos/${todoID1}/subtasks/${subtaskID1}`)
+        .send({
+          data: {
+            type: 'todo',
+            attributes: {
+              status: 'First Todo',
+            },
+          },
+        })
+        .set('Content-Type', contentType);
+      assert.equal(res.status, 400);
+      assert.equal(
+        res.body.errors[0].title,
+        'data.type must be one of the following values: subtask'
+      );
+    });
+
+    it('should not update a subtask with invalid todoID', async () => {
+      const res = await server
+        .patch(`/todos/${faker.datatype.uuid()}/subtasks/${faker.datatype.uuid()}`)
+        .send(data)
+        .set('Content-Type', contentType);
+      assert.equal(res.status, 404);
+      assert.equal(res.body.errors[0].title, 'Todo with id does not exist');
+    });
+
+    it('should not update a subtask with invalid subtaskID', async () => {
+      const res = await server
+        .patch(`/todos/${todoID1}/subtasks/${faker.datatype.uuid()}`)
+        .send(data)
+        .set('Content-Type', contentType);
+      assert.equal(res.status, 404);
+      assert.equal(res.body.errors[0].title, 'Subtask with id does not exist');
+    });
+
+    it('should update a subtask', async () => {
+      const res = await server
+        .patch(`/todos/${todoID1}/subtasks/${subtaskID1}`)
+        .send(data)
+        .set('Content-Type', contentType);
+      assert.equal(res.status, 200);
+
+      const todo = await todoDao.getTodoByID(todoID1);
+      assert.equal(todo?.status, StatusEnum.COMPLETED);
     });
   });
 });

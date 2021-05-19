@@ -15,6 +15,27 @@ const createObject = (type: string) => {
   };
 };
 
+const updateObject = (type: string) => {
+  return {
+    data: yup.object({
+      type: yup
+        .string()
+        .oneOf([type])
+        .required(),
+      id: yup
+        .string()
+        .uuid()
+        .required(),
+      attributes: yup.object({
+        status: yup
+          .string()
+          .oneOf(Object.values(StatusEnum))
+          .required(),
+      }),
+    }),
+  };
+};
+
 export const createTodoSchema = yup
   .object({
     ...createObject('todo'),
@@ -36,21 +57,12 @@ export const idsSchema = yup
 
 export const updateTodoSchema = yup
   .object({
-    data: yup.object({
-      type: yup
-        .string()
-        .oneOf(['todo'])
-        .required(),
-      id: yup
-        .string()
-        .uuid()
-        .required(),
-      attributes: yup.object({
-        status: yup
-          .string()
-          .oneOf(Object.values(StatusEnum))
-          .required(),
-      }),
-    }),
+    ...updateObject('todo'),
+  })
+  .noUnknown();
+
+export const updateSubtaskSchema = yup
+  .object({
+    ...updateObject('subtask'),
   })
   .noUnknown();
