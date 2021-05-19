@@ -17,15 +17,13 @@ const ormConfig = () => {
     port: +(process.env.DATABASE_PORT as any),
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME,
+    database:
+      process.env.TODO_ENV === 'test' ? process.env.TEST_DATABASE_NAME : process.env.DATABASE_NAME,
     entities,
-    migrations,
-    migrationsRun: process.env.DCS_ENV !== 'test',
-    cli: {
-      migrationsDir: `src/database/migrations`,
-    },
-    synchronize: process.env.DCS_ENV === 'test',
-    dropSchema: process.env.DCS_ENV === 'test',
+    ...(process.env.TODO_ENV !== 'test' && { migrations }),
+    migrationsRun: process.env.TODO_ENV !== 'test',
+    synchronize: process.env.TODO_ENV === 'test',
+    dropSchema: process.env.TODO_ENV === 'test',
   };
   return config;
 };

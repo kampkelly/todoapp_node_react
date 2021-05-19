@@ -6,7 +6,7 @@ export default class TodoService {
   public static listTodos = async () => {
     const todos = await todoDao.listTodos();
     const response = todos.map(todo => todoDataBuilder.transformTodo(todo));
-    return { data: { ...response } };
+    return { data: [...response] };
   };
 
   public static createTodo = async (body: any) => {
@@ -20,6 +20,6 @@ export default class TodoService {
       };
     }
 
-    return { data: { todo: todoDataBuilder.transformTodo(todo) } };
+    return { data: { todo: todoDataBuilder.transformTodo(todo) }, statusCode: 201 };
   };
 }

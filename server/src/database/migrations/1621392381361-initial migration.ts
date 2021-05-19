@@ -1,7 +1,7 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class initialMigration1621384324163 implements MigrationInterface {
-    name = 'initialMigration1621384324163'
+export class initialMigration1621392381361 implements MigrationInterface {
+    name = 'initialMigration1621392381361'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "todo_status_enum" AS ENUM('pending', 'completed')`);

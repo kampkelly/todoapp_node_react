@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 import Todo from './Todo';
-import { StatusEnum } from '.';
+import { StatusEnum } from './enums';
 
 @Entity()
 export default class Subtask {

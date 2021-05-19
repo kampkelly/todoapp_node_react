@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
 
-import { StatusEnum } from '.';
+import { StatusEnum } from './enums';
 import Subtask from './Subtask';
 
 @Entity()

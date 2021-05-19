@@ -9,7 +9,8 @@
     "dev": "ts-node-dev src/app.ts",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
     "migrate": "yarn run typeorm migration:run",
-    "migrate:revert": "yarn run typeorm migration:revert"
+    "migrate:revert": "yarn run typeorm migration:revert",
+    "test": "cross-env TS_NODE_FILES=true TODO_ENV=test nyc --reporter=lcov --reporter=text-summary mocha -r ts-node/register --files src __tests__/**/*.ts --timeout 40000 --exit"
   },
   "dependencies": {
     "dotenv": "^9.0.2",
@@ -27,6 +28,7 @@
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "chai": "^4.2.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.15.0",
     "eslint-config-airbnb-typescript-prettier": "^4.1.0",
     "eslint-config-prettier": "^7.0.0",
