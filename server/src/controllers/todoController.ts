@@ -11,4 +11,8 @@ export default class TodoController {
   public static createTodo = async (req: Request, res: Response) => {
     return controllerTemplate(todoService.createTodo(req.body), req, res);
   };
+
+  public static updateTodo = async (req: Request, res: Response) => {
+    return controllerTemplate(todoService.updateTodo(req.params, req.body), req, res);
+  };
 }

@@ -21,7 +21,6 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "max-lines-per-function": ["error", {"max": 80, "skipBlankLines": true, "skipComments": true}],
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-shadow": "off",
     "@typescript-eslint/no-non-null-assertion": "off",

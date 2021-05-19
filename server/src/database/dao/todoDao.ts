@@ -22,4 +22,9 @@ export default class TodoDAO {
     const createdTodo = await getRepository(Todo).save(todo);
     return TodoDAO.getTodoByID(createdTodo.id);
   };
+
+  public static updateTodo = async (id: string, todo: Partial<Todo>) => {
+    await getRepository(Todo).update(id, todo);
+    return TodoDAO.getTodoByID(id);
+  };
 }

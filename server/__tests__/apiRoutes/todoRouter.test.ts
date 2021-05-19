@@ -9,12 +9,14 @@ import { createConnection } from 'typeorm';
 require('dotenv').config();
 
 import app from '../../src/server';
+import { StatusEnum } from '../../src/database/entities/enums';
 
 const ormConfig = require('../../ormconfig');
 
 const server = supertest.agent(app);
 
 const contentType = 'application/vnd.api+json';
+let todoID1 = '';
 
 describe('Todo Router', () => {
   before(async function beforeHook() {
@@ -30,14 +32,19 @@ describe('Todo Router', () => {
   });
 
   describe('Create Todos', () => {
-    const data = {
-      data: {
-        type: 'todo',
-        attributes: {
-          title: 'First Todo',
+    let data: any;
+
+    before(function beforeHook() {
+      data = {
+        data: {
+          type: 'todo',
+          attributes: {
+            title: 'First Todo',
+          },
         },
-      },
-    };
+      };
+    });
+
     it('should not create a todo with incorrect data', async () => {
       const res = await server
         .post('/todos')
@@ -60,6 +67,50 @@ describe('Todo Router', () => {
         .send(data)
         .set('Content-Type', contentType);
       assert.equal(res.status, 201);
+      todoID1 = res.body.data.id;
+    });
+  });
+
+  describe('Update Todos', () => {
+    let data: any;
+
+    before(function beforeHook() {
+      data = {
+        data: {
+          type: 'todo',
+          id: todoID1,
+          attributes: {
+            status: StatusEnum.PENDING,
+          },
+        },
+      };
+    });
+
+    it('should not update a todo with incorrect data', async () => {
+      const res = await server
+        .patch(`/todos/${todoID1}`)
+        .send({
+          data: {
+            type: 'todo',
+            attributes: {
+              status: 'First Todo',
+            },
+          },
+        })
+        .set('Content-Type', contentType);
+      assert.equal(res.status, 400);
+      assert.equal(
+        res.body.errors[0].title,
+        'data.attributes.status must be one of the following values: pending, completed'
+      );
+    });
+
+    it('should update a todo', async () => {
+      const res = await server
+        .patch(`/todos/${todoID1}`)
+        .send(data)
+        .set('Content-Type', contentType);
+      assert.equal(res.status, 200);
     });
   });
 });
