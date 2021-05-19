@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import { Button, Input } from '@material-ui/core';
 
-
 import Todo from '../Todo/Todo';
 import { TodoContext } from '../../state/Contexts/TodoContext';
 
