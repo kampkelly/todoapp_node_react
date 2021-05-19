@@ -7,4 +7,8 @@ export default class TodoController {
   public static listTodos = async (req: Request, res: Response) => {
     return controllerTemplate(todoService.listTodos(), req, res);
   };
+
+  public static createTodo = async (req: Request, res: Response) => {
+    return controllerTemplate(todoService.createTodo(req.body), req, res);
+  };
 }

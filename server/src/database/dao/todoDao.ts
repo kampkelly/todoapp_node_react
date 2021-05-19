@@ -9,4 +9,17 @@ export default class TodoDAO {
       .leftJoinAndSelect('todo.subtasks', 'subtask')
       .getMany();
   };
+
+  public static getTodoByID = async (id: string) => {
+    return getRepository(Todo)
+      .createQueryBuilder('todo')
+      .leftJoinAndSelect('todo.subtasks', 'subtask')
+      .where('todo.id = :id', { id })
+      .getOne();
+  };
+
+  public static createTodo = async (todo: Partial<Todo>) => {
+    const createdTodo = await getRepository(Todo).save(todo);
+    return TodoDAO.getTodoByID(createdTodo.id);
+  };
 }
