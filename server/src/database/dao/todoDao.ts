@@ -7,6 +7,8 @@ export default class TodoDAO {
     return getRepository(Todo)
       .createQueryBuilder('todo')
       .leftJoinAndSelect('todo.subtasks', 'subtask')
+      .orderBy('todo.createdAt', 'DESC')
+      .addOrderBy('subtask.createdAt', 'DESC')
       .getMany();
   };
 
