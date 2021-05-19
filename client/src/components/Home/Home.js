@@ -32,36 +32,35 @@ const Home = () => {
 
   const addTodo = async () => {
     if (!todoTitle.length) {
-      setAddTodoError('The todo title is required');
+      setAddTodoError("The todo title is required");
       return;
     }
     try {
-    const response = await fetch("/todos", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/vnd.api+json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        data: {
-          type: "todo",
-          attributes: {
-            title: todoTitle,
-          },
+      const response = await fetch("/todos", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/vnd.api+json",
         },
-      }),
-    });
-    const res = await response.json();
-    const { data } = res;
-    if (!response.ok) {
-      throw Error(res.errors[0].title);
-    }
-    
-    setState({ ...state, todos: [ ...todos, data ] });
-  } catch(err) {
-    setAddTodoError(err.message);
-  }
+        method: "POST",
+        body: JSON.stringify({
+          data: {
+            type: "todo",
+            attributes: {
+              title: todoTitle,
+            },
+          },
+        }),
+      });
+      const res = await response.json();
+      const { data } = res;
+      if (!response.ok) {
+        throw Error(res.errors[0].title);
+      }
 
+      setState({ ...state, todos: [...todos, data] });
+    } catch (err) {
+      setAddTodoError(err.message);
+    }
   };
 
   const todoList = todos.map((todo) => <Todo key={todo.id} todo={todo}></Todo>);

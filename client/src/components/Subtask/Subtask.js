@@ -6,14 +6,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 
 const Subtask = (props) => {
+  const status = props.subtask?.status || props.subtask.attributes?.status;
   return (
     <li className="subtask">
         <ListItem key={1} button>
-          <ListItemText primary="cool oness"/>
+          <ListItemText primary={props.subtask?.title || props.subtask.attributes?.title}/>
             <ListItemSecondaryAction>
               <Checkbox
                 edge="end"
-                checked={props.subtask.status === 'completed' ? true: false}
+                checked={status === 'completed' ? true: false}
               />
             </ListItemSecondaryAction>
           </ListItem>
