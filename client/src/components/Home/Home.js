@@ -56,7 +56,7 @@ const Home = () => {
         throw Error(res.errors[0].title);
       }
 
-      setState({ ...state, todos: [...todos, data] });
+      setState({ ...state, todos: [data, ...todos] });
     } catch (err) {
       setAddTodoError(err.message);
     }

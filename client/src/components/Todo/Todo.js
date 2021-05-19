@@ -56,7 +56,7 @@ const Todo = (props) => {
         throw Error(res.errors[0].title);
       }
 
-      setSubtasks([...subtasks, data]);
+      setSubtasks([data, ...subtasks]);
     } catch (err) {
       setAddSubtaskError(err.message);
     }
