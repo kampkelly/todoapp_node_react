@@ -10,6 +10,7 @@ import { Button, Input } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import { TodoContext } from '../../state/Contexts/TodoContext';
 import Subtask from '../Subtask/Subtask';
+import './Todo.css';
 
 const Todo = (props) => {
   const { state, setState } = useContext(TodoContext);
@@ -62,6 +63,7 @@ const Todo = (props) => {
   };
 
   const subtaskList = subtasks.map((subtask) => <Subtask key={subtask.id} todoID={props.todo.id} subtask={subtask}></Subtask>)
+  const completedSubtasks = subtasks.filter((subtask) => subtask.status === 'completed' || subtask.attributes?.status === 'completed');
   return (
     <div className="todo">
       <Accordion>
@@ -76,8 +78,9 @@ const Todo = (props) => {
             onClick={(event) => event.stopPropagation()}
             onFocus={(event) => event.stopPropagation()}
             control={<Checkbox checked={props.todo.attributes.status === 'completed' ? true: false} />}
-            label={props.todo.attributes.title}
+            label={`${props.todo.attributes.title}`}
           />
+          <p className="counter">{completedSubtasks.length} of {subtasks.length} completed</p>
         </AccordionSummary>
         <AccordionDetails>
           <List>
