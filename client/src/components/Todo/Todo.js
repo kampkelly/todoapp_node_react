@@ -24,7 +24,6 @@ const Todo = (props) => {
   const subtaskList = subtasks.map((subtask) => <Subtask key={subtask.id} todoID={props.todo.id} subtask={subtask}></Subtask>)
   return (
     <div className="todo">
-      <button>Add</button>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
