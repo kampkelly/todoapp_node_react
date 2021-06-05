@@ -57,6 +57,7 @@ const Home = () => {
       }
 
       setState({ ...state, todos: [data, ...todos] });
+      setTodoTitle('');
     } catch (err) {
       setAddTodoError(err.message);
     }
@@ -71,7 +72,7 @@ const Home = () => {
           <h1>My Todo App</h1>
           <h3> List of Todos</h3>
           <p color="secondary">{addTodoError}</p>
-          <Input id="standard-basic" placeholder="Todo title" onChange={handleInputChange} label="Standard" />
+          <Input id="standard-basic" placeholder="Todo title" onChange={handleInputChange} value={todoTitle} label="Standard" />
           <Button variant="contained" size="small" color="secondary" onClick={addTodo}>
             Add Todo
           </Button>

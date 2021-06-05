@@ -15,6 +15,7 @@ import './Todo.css';
 const Todo = (props) => {
   const { state, setState } = useContext(TodoContext);
   const [subtasks, setSubtasks] = useState([]);
+  const [todoStatus, setTodoStatus] = useState(false);
   const [subtaskTitle, setSubtaskTitle] = useState('');
   const [addSubtaskError, setAddSubtaskError] = useState('');
 
@@ -26,6 +27,7 @@ const Todo = (props) => {
 
   useEffect(() => {
     setSubtasks(props.todo.attributes.subtasks);
+    setTodoStatus(props.todo.attributes.status === 'completed' ? true: false);
   }, [state]);
 
 
@@ -57,6 +59,8 @@ const Todo = (props) => {
       }
 
       setSubtasks([data, ...subtasks]);
+      setTodoStatus(false);
+      setSubtaskTitle('');
     } catch (err) {
       setAddSubtaskError(err.message);
     }
@@ -77,7 +81,7 @@ const Todo = (props) => {
             aria-label="Acknowledge"
             onClick={(event) => event.stopPropagation()}
             onFocus={(event) => event.stopPropagation()}
-            control={<Checkbox checked={props.todo.attributes.status === 'completed' ? true: false} />}
+            control={<Checkbox checked={todoStatus} />}
             label={`${props.todo.attributes.title}`}
           />
           <p className="counter">{completedSubtasks.length} of {subtasks.length} completed</p>
@@ -88,7 +92,7 @@ const Todo = (props) => {
           </List>
         </AccordionDetails>
         <p color="secondary">{addSubtaskError}</p>
-        <Input id="standard-basic" placeholder="Subtask title" onChange={handleInputChange} label="Standard" />
+        <Input id="standard-basic" placeholder="Subtask title" onChange={handleInputChange} value={subtaskTitle} label="Standard" />
           <Button variant="contained" size="small" color="secondary" onClick={addSubtask}>
             Add Subtask
           </Button>

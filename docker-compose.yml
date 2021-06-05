@@ -1,0 +1,39 @@
+version: "3.6"
+services:
+    client:
+        container_name: todo_web
+        build:
+            context: ./client
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./client:/usr/src/app
+    server:
+        container_name: todo_server
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+        ports:
+            - "5000:5000"
+        environment:
+          TODO_ENV: local
+          DATABASE_HOST: db
+        env_file: "./server/.env"
+        volumes:
+            - ./server:/usr/src/app
+        links:
+          - db
+
+    db:
+        restart: always
+        image: postgres:10
+        hostname: postgres
+        ports:
+          - '5432:5432'
+        environment:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: admin
+          POSTGRES_DB: todoapp
+        volumes:
+          - ./docker-data/pg:/var/lib/postgresql/data
